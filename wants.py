@@ -15,15 +15,15 @@ br['username'] = wc.username
 br['password'] = wc.password
 response = br.submit()
 
-response = br.open('https://www.discogs.com/sell/mywants?ev=wsim#more%%3Dseller')
+response = br.open('https://www.discogs.com/sell/mywants?currency=USD&ev=wsim#more%%3Dseller')
 res = response.get_data()
 soup = BeautifulSoup(res, "lxml")
 for seller in soup.find_all(class_='filter_seller')[0].contents[1].find_all('a')[:-1]:
 	number = seller.find(class_='facet_count').contents[0]
 	text = seller['href']
-	name = re.search(u'/seller/(.+)/mywants\?ev=wsim', text).group(1)
+	name = re.search(u'/seller/(.+)/mywants', text).group(1)
 	print name.upper() + " ----- " + number
-	response = br.open('https://www.discogs.com/seller/' + name + '/mywants?ev=wsim')
+	response = br.open('https://www.discogs.com/seller/' + name + '/mywants?currency=USD&ev=wsim')
 	resp = response.get_data()
 	soup = BeautifulSoup(resp, "lxml")
 	links = soup.find_all(class_="item_release_link")
